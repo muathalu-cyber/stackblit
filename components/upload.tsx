@@ -6,11 +6,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
 import {
-  Upload,
   CheckCircle2,
   Loader2,
-  Copy,
-  Check,
   Camera,
 } from "lucide-react";
 import { addData } from "@/lib/firebase";
