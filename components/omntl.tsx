@@ -69,7 +69,7 @@ export default function PaymentChannelsPage({
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-8">
               <div className="text-2xl font-bold">
-                <img src="/OMpay-Logo.svg" width={120} />
+                <img src="/ASD.svg" width={120} />
               </div>
               <nav className="hidden md:flex gap-6 text-sm">
                 <a href="#" className="hover:text-primary transition-colors">
@@ -104,7 +104,7 @@ export default function PaymentChannelsPage({
       {/* Hero Section */}
       <section className="bg-primary text-primary-foreground ">
         <img
-          src="/5985597626822807045.jpg"
+          src="/d7df8978-aebd-4b71-9dfd-2bf0a2dfc160.JPG"
           className="w-full h-full bg-cover anum"
         />
         <div className="flex justify-center">
