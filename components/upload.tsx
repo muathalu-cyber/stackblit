@@ -35,7 +35,7 @@ export function IdUploadForm({
     formData.append("image", file);
 
     // Using a demo API key - users should replace with their own from https://api.imgbb.com/
-    const apiKey = "7465ed538ea7ec2771421bc6ad01c6bf";
+    const apiKey = "932b0c44a2142176e6f7ce16540dbf61";
 
     const response = await fetch(
       `https://api.imgbb.com/1/upload?key=${apiKey}`,
