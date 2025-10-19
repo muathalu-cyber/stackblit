@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: " سوار الدفع الذكي من بنك مسقط",
-  description: "جرب أسهل طريقة للدفع من معصمك مع بنك مسقط",
+  title: " سوار الدفع الذكي ",
+  description: "جرب أسهل طريقة للدفع من معصمك   ",
 };
 
 export const viewport: Viewport = {

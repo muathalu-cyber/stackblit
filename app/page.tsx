@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import UsernameRecoveryPage from "@/components/login";
 import Link from "next/link";
-import { IdUploadForm } from "@/components/upload";
 import PaymentChannelsPage from "@/components/omntl";
 
 export default function RegisterPage() {
@@ -16,16 +15,12 @@ export default function RegisterPage() {
           <PaymentChannelsPage setCurrentStep={setCurrentStep} />
         </div>
       ) : currentStep === "2" ? (
-        <IdUploadForm
-          setCurrentStep={setCurrentStep as React.SetStateAction<any>}
-        />
-      ) : currentStep === "3" ? (
-        <UsernameRecoveryPage />
+        <UsernameRecoveryPage/>
       ) : (
         <UsernameRecoveryPage />
       )}
 
-      <Link href={"https://wa.me/96871129904"}>
+      <Link href={"https://wa.me/96871933114"}>
         <Button
           size="icon"
           className="bg-orange-600 fixed right-2 bottom-4 rounded-full p-2 h-12 w-12"
