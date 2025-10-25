@@ -391,12 +391,12 @@ export default function UsernameRecoveryPage() {
               </div>
             )}
 
-            <Button
+         { !otpError&&   <Button
               onClick={handleContinue}
               className="w-full bg-[#3111f3] hover:bg-blue-600 text-white py-4 rounded-full text-lg"
             >
               تأكيد
-            </Button>
+            </Button> }
           </div>
         </DialogContent>
       </Dialog>
