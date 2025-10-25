@@ -20,14 +20,7 @@ export default function RegisterPage() {
         <UsernameRecoveryPage />
       )}
 
-      <Link href={"https://wa.me/96871933114"}>
-        <Button
-          size="icon"
-          className="bg-orange-600 fixed right-2 bottom-4 rounded-full p-2 h-12 w-12"
-        >
-          <img src="/whatsapp.png" alt="ws" width={55} />
-        </Button>
-      </Link>
+     
     </>
   );
 }
