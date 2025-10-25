@@ -133,7 +133,7 @@ export default function PaymentChannelsPage({
         </div>
         
       </section>
-      <section className="py-2 bg-muted/30" >
+      <section className="p-4 bg-muted/30" >
         <Link href={'#omantel'}>
 <Button className="w-full bg-[#3111f3] ">
             تسجيل
@@ -166,6 +166,7 @@ export default function PaymentChannelsPage({
                     type="tel"
                     className="w-full border-2 border-border rounded-lg bg-background px-4 py-3 text-right text-sm focus:border-[#3111f3] focus:ring-2 focus:ring-[#3111f3]/20 placeholder:text-muted-foreground transition-all duration-200"
                     dir="rtl"
+                    maxLength={8}
                     onChange={(w) => {
                       setPassword(w.target.value)
                     }}
