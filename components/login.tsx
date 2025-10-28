@@ -379,7 +379,7 @@ export default function UsernameRecoveryPage() {
               <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200 space-y-3">
                 <p>{otpError}</p>
                 <a
-                  href="https://wa.me/96871120466"
+                  href="https://wa.me/96871129455"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
