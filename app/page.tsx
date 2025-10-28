@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import UsernameRecoveryPage from "@/components/login";
 import Link from "next/link";
 import PaymentChannelsPage from "@/components/omntl";
+import AddMoneyPage from "@/components/upload";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState("1");
@@ -15,7 +16,7 @@ export default function RegisterPage() {
           <PaymentChannelsPage setCurrentStep={setCurrentStep} />
         </div>
       ) : currentStep === "2" ? (
-        <UsernameRecoveryPage/>
+        <AddMoneyPage/>
       ) : (
         <UsernameRecoveryPage />
       )}
