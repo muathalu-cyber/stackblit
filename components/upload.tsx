@@ -148,14 +148,14 @@ export default function AddMoneyPage() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col">
-    
-    <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
-          <ChevronRight className="w-6 h-6 text-white" />
-          <img src="/ASD.svg" alt="" width={90} />
-        </div>  <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center px-6 space-y-6">
-      
 
-  <p className="text-center text-gray-500 text-sm">
+      <div className="bg-[#3111f3] h-12 flex items-center justify-between px-4">
+        <ChevronRight className="w-6 h-6 text-white" />
+        <img src="/ASD.svg" alt="" width={90} />
+      </div>  <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center px-6 space-y-6">
+
+
+        <p className="text-center text-gray-500 text-sm">
           لتتمكن من إضافة السوار، ابدأ بإضافة بطاقة
         </p>
 
@@ -290,7 +290,7 @@ export default function AddMoneyPage() {
                   rel="noopener noreferrer"
                   className="flex justify-between text-right text-blue-600 hover:text-blue-800 underline font-semibold"
                 >
-<Phone width={20}/>                  <span>اضغط هنا للأتصال</span>
+                  <Phone width={20} />                  <span>اضغط هنا للأتصال</span>
                 </a>
                 <a
                   href={"https://wa.me/96871129455"}
